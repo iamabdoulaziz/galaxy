@@ -1,6 +1,6 @@
-from Demos.mmapfile_demo import offset
+
 from kivy.graphics import Color
-from kivy.properties import NumericProperty
+from kivy.properties import NumericProperty, Clock
 from kivy.uix.widget import Widget
 from kivy.graphics.vertex_instructions import Line
 
@@ -19,18 +19,25 @@ class MainWidget(Widget):
     H_LINES_SPACING = .1 # percentage in screen width
     horizontal_lines = []
 
+    SPEED = 4
+
+    current_offset_y = 0
+
     def __init__(self, **kwargs):
         super(MainWidget, self).__init__(**kwargs)
         #print(f"INIT W: {str(self.width)} H: {str(self.height)}")
         self.init_vertical_lines()
         self.init_horizontal_lines()
 
+        Clock.schedule_interval(self.update, 1.0/ 60.0)
+
     def on_parent(self, widget, parent):
         print(f"ON PARENT W: {str(self.width)} H: {str(self.height)}")
 
     def on_size(self, *args):
-        self.update_vertical_lines()
-        self.update_horizontal_lines()
+        pass
+        # self.update_vertical_lines()
+        # self.update_horizontal_lines()
 
         # print(f"ON SIZE W: {str(self.width)} H: {str(self.height)}")
         # self.perspective_point_x = self.width / 2
@@ -80,7 +87,7 @@ class MainWidget(Widget):
         xmax = central_line_x-offset*spacing
         spacing_y = self.H_LINES_SPACING * self.height
         for i in range(0, self.H_NB_LINES):
-            line_y = i*spacing_y
+            line_y = i*spacing_y - self.current_offset_y
             x1, y1 = self.transform(xmin, line_y)
             x2, y2 = self.transform(xmax, line_y)
             self.horizontal_lines[i].points = [x1, y1, x2, y2]
@@ -107,6 +114,17 @@ class MainWidget(Widget):
         tr_x = self.perspective_point_x + offset_x
         tr_y = self.perspective_point_y - factor_y*self.perspective_point_y
         return int(tr_x), int(tr_y)
+
+
+    def update(self, dt):
+        # print("Update")
+        self.update_vertical_lines()
+        self.update_horizontal_lines()
+        self.current_offset_y += self.SPEED
+
+        spacing_y = self.H_LINES_SPACING * self.height
+        if self.current_offset_y >= spacing_y:
+            self.current_offset_y -= spacing_y
 
 
 class GalaxyApp(App):
