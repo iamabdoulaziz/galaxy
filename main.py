@@ -52,9 +52,9 @@ class MainWidget(Widget):
         spacing = self.V_LINES_SPACING * self.width
         offset = -int(self.V_NB_LINES / 2)
         for i in range(0, self.V_NB_LINES):
-            x1 = int(central_line_x + offset * spacing)
+            x1 = int(central_line_x+offset*spacing)
             y1 = 0
-            x2 = 0
+            x2 = x1
             y2 = self.height
             self.vertical_lines[i].points = [x1, y1, x2, y2]
             offset += 1
