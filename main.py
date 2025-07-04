@@ -72,7 +72,7 @@ class MainWidget(Widget):
 
     def get_line_y_from_index(self, index):
         spacing_y = self.H_LINES_SPACING * self.height
-        line_y = index - spacing_y - self.current_offset_y
+        line_y = index * spacing_y - self.current_offset_y
         return line_y
 
     def update_vertical_lines(self):
