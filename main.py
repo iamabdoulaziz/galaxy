@@ -57,6 +57,7 @@ class MainWidget(RelativeLayout):
 
     menu_title = StringProperty("G   A   L   A   X   Y")
     menu_button_title = StringProperty("START")
+    score_txt = NumericProperty(0)
 
     def __init__(self, **kwargs):
         super(MainWidget, self).__init__(**kwargs)
@@ -80,6 +81,7 @@ class MainWidget(RelativeLayout):
         self.current_speed_x = 0
         self.current_y_loop = 0
         self.tiles_coordinates = []
+        self.score_txt = 0
         self.pre_fill_tiles_coordinates()
         self.generate_tiles_coordinates()
         self.state_game_over = False
@@ -270,6 +272,7 @@ class MainWidget(RelativeLayout):
                 self.current_offset_y -= spacing_y
                 self.current_y_loop += 1
                 self.generate_tiles_coordinates()
+                self.score_txt = self.current_y_loop
 
             speed_x = self.current_speed_x * self.width/100
             self.current_offset_x += speed_x * time_factor
