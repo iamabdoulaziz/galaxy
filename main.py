@@ -22,15 +22,15 @@ class MainWidget(Widget):
     perspective_point_x = NumericProperty(0)
     perspective_point_y = NumericProperty(0)
 
-    V_NB_LINES = 4
-    V_LINES_SPACING = .1 # percentage in screen width
+    V_NB_LINES = 8
+    V_LINES_SPACING = .2 # percentage in screen width
     vertical_lines = []
 
     H_NB_LINES = 15
     H_LINES_SPACING = .2 # percentage in screen width
     horizontal_lines = []
 
-    SPEED = 4
+    SPEED = 2
     SPEED_X = 12
 
     current_offset_y = 0
@@ -49,6 +49,7 @@ class MainWidget(Widget):
         self.init_vertical_lines()
         self.init_horizontal_lines()
         self.init_tiles()
+        self.pre_fill_tiles_coordinates()
         self.generate_tiles_coordinates()
 
         if self.is_desktop():
@@ -71,6 +72,10 @@ class MainWidget(Widget):
             for i in range (0, self.NB_TILES):
                 self.tiles.append(Quad())
 
+    def pre_fill_tiles_coordinates(self):
+        # 10 tiles en ligne droite
+        pass
+
     def generate_tiles_coordinates(self):
         last_x = 0
         last_y = 0
@@ -88,17 +93,25 @@ class MainWidget(Widget):
 
         for i in range(len(self.tiles_coordinates), self.NB_TILES):
             r = random.randint(0, 2)
+
+            start_index = -int(self.V_NB_LINES / 2) + 1
+            end_index = start_index + self.V_NB_LINES - 1
+            if last_x <= start_index:
+                r = 1
+            if last_x >= end_index:
+                r = 2
+
             self.tiles_coordinates.append((last_x, last_y))
             if r == 1:
                 last_x += 1
                 self.tiles_coordinates.append((last_x, last_y))
-                last_x += 1
+                last_y += 1
                 self.tiles_coordinates.append((last_x, last_y))
 
             elif r == 2:
                 last_x -= 1
                 self.tiles_coordinates.append((last_x, last_y))
-                last_x += 1
+                last_y += 1
                 self.tiles_coordinates.append((last_x, last_y))
             last_y += 1
 
