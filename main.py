@@ -73,8 +73,8 @@ class MainWidget(Widget):
                 self.tiles.append(Quad())
 
     def pre_fill_tiles_coordinates(self):
-        # 10 tiles en ligne droite
-        pass
+        for i in range(0, 10):
+            self.tiles_coordinates.append((0, i))
 
     def generate_tiles_coordinates(self):
         last_x = 0
